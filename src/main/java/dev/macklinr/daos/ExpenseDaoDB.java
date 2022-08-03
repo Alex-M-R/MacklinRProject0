@@ -15,12 +15,14 @@ import java.util.List;
 public class ExpenseDaoDB implements ExpenseDAO
 {
 
+    static String tableName = "testexpense";  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using expense table, or a test table
+
     @Override
     public Expense createExpense(Expense expense)
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "insert into expense values (default, ?, ?, ?, ?, ?)";
+            String sql = "insert into " + tableName + " values (default, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, expense.getIssuingEmployeeID()); // employeeID
             preparedStatement.setString(2, expense.getExpenseType().name()); // expenseType
@@ -51,7 +53,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from expense where id = ?";
+            String sql = "select * from " + tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,id);
@@ -82,7 +84,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from expense";
+            String sql = "select * from " + tableName;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -117,7 +119,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "update expense set employeeid = ?, expensetype = ?, amount = ?, description = ?, expensestatus = ? where id = ?";
+            String sql = "update " + tableName + " set employeeid = ?, expensetype = ?, amount = ?, description = ?, expensestatus = ? where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -143,7 +145,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "delete from expense where id = ?";
+            String sql = "delete from " + tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 

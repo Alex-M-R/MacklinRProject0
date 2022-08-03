@@ -1,12 +1,13 @@
 package dev.macklinr.daotests;
 
-import dev.macklinr.daos.EmployeeDAO;
-import dev.macklinr.daos.EmployeeDaoLocal;
-import dev.macklinr.daos.ExpenseDAO;
-import dev.macklinr.daos.ExpenseDaoLocal;
+import dev.macklinr.daos.*;
 import dev.macklinr.entities.Employee;
+import dev.macklinr.utils.ConnectionUtil;
 import org.junit.jupiter.api.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +17,29 @@ import java.util.List;
 // Originally created to test DaoLocal
 public class EmployeeDaoTests
 {
-    EmployeeDAO employeeDAO = new EmployeeDaoLocal();
+    EmployeeDAO employeeDAO = new EmployeeDaoDB();
+
+    @BeforeAll
+    static void setup()
+    {
+        // Create test table for Employees
+        try(Connection conn = ConnectionUtil.createConnection())
+        {
+            String sql = "create table testemployee\n" +
+                    "(\n" +
+                    "\tid serial primary key, \t\t\t\n" +
+                    "\tname varchar(40) not null \t\n" +
+                    ");";
+
+            Statement statement = conn.createStatement();
+            statement.execute(sql);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     @Order(1)
@@ -31,7 +54,6 @@ public class EmployeeDaoTests
     @Order(2)
     void get_employee_by_id_test()
     {
-        employeeDAO.createEmployee(new Employee("Alex Macklin-Rivera"));
         Employee employee = employeeDAO.getEmployeeById(1);
         Assertions.assertEquals("Alex Macklin-Rivera", employee.getName());
     }
@@ -40,8 +62,6 @@ public class EmployeeDaoTests
     @Order(3)
     void update_employee_test()
     {
-        employeeDAO.createEmployee(new Employee("Alex Macklin-Rivera"));
-
         Employee employee = new Employee(1, "Rodrigo Diaz");
         Employee updatedEmployee = employeeDAO.updateEmployee(employee);
         Employee retrievedEmployee = employeeDAO.getEmployeeById(1);
@@ -52,8 +72,6 @@ public class EmployeeDaoTests
     @Order(4)
     void delete_employee_by_id_test()
     {
-        employeeDAO.createEmployee(new Employee("Alex Macklin-Rivera"));
-
         boolean result = employeeDAO.deleteEmployeeById(1);
         Assertions.assertTrue(result);
     }
@@ -75,16 +93,25 @@ public class EmployeeDaoTests
 
         Collection<Employee> list = employeeDAO.getAllEmployees();
 
-        Assertions.assertNotNull(list);
+        Assertions.assertEquals(4, list.size());
     }
 
-
-    @Test
-    @Order(6)
-    void attempt_delete_employee_not_found()
+    @AfterAll
+    static void teardown()
     {
-        boolean result = employeeDAO.deleteEmployeeById(1);
-        Assertions.assertFalse(result);
+        // Drop test table Employee
+        try(Connection conn = ConnectionUtil.createConnection())
+        {
+            String sql = "drop table testemployee";
+
+            Statement statement = conn.createStatement();
+            statement.execute(sql);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
+
 
 }
