@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+// Originally created to test DaoLocal
 public class EmployeeDaoTests
 {
     EmployeeDAO employeeDAO = new EmployeeDaoLocal();
@@ -61,7 +62,7 @@ public class EmployeeDaoTests
     @Order(5)
     void get_employee_list_test()
     {
-        List<Employee> fakeList = new ArrayList();
+        List<Employee> fakeList = new ArrayList<>();
         fakeList.add(new Employee("Alex Macklin-Rivera"));
         fakeList.add(new Employee("Mark Hammil"));
         fakeList.add(new Employee("Carrie Fisher"));
