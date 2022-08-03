@@ -20,12 +20,13 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "insert into expense values (default, ?, ?, ?, ?)";
+            String sql = "insert into expense values (default, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, expense.getIssuingEmployeeID()); // employeeID
             preparedStatement.setString(2, expense.getExpenseType().name()); // expenseType
             preparedStatement.setDouble(3,expense.getExpenseAmount()); //amount
-            preparedStatement.setString(4, expense.getStatus().name()); //expenseStatus
+            preparedStatement.setString(4, expense.getDescription()); // description
+            preparedStatement.setString(5, expense.getStatus().name()); //expenseStatus
 
 
             preparedStatement.execute();
@@ -64,6 +65,7 @@ public class ExpenseDaoDB implements ExpenseDAO
             expense.setIssuingEmployeeID(rs.getInt("employeeid"));
             expense.setExpenseType(ExpenseType.valueOf(rs.getString("expensetype")));
             expense.setExpenseAmount(rs.getDouble("amount"));
+            expense.setDescription(rs.getString("description"));
             expense.setStatus(ExpenseStatus.valueOf(rs.getString("expensestatus")));
 
             return expense;
@@ -95,6 +97,7 @@ public class ExpenseDaoDB implements ExpenseDAO
                 expense.setIssuingEmployeeID(rs.getInt("employeeid"));
                 expense.setExpenseType(ExpenseType.valueOf(rs.getString("expensetype")));
                 expense.setExpenseAmount(rs.getDouble("amount"));
+                expense.setDescription(rs.getString("description"));
                 expense.setStatus(ExpenseStatus.valueOf(rs.getString("expensestatus")));
 
                 expenseList.add(expense);
@@ -114,15 +117,16 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "update expense set employeeid = ?, expensetype = ?, amount = ?, expensestatus = ? where id = ?";
+            String sql = "update expense set employeeid = ?, expensetype = ?, amount = ?, description = ?, expensestatus = ? where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
             preparedStatement.setInt(1, expense.getIssuingEmployeeID());
             preparedStatement.setString(2, expense.getExpenseType().name());
             preparedStatement.setDouble(3, expense.getExpenseAmount());
-            preparedStatement.setString(4, expense.getStatus().name());
-            preparedStatement.setInt(5, expense.getId());
+            preparedStatement.setString(4, expense.getDescription());
+            preparedStatement.setString(5, expense.getStatus().name());
+            preparedStatement.setInt(6, expense.getId());
 
             preparedStatement.executeUpdate();
             return expense;
