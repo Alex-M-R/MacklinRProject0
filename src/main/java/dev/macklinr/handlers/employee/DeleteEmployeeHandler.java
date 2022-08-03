@@ -21,8 +21,8 @@ public class DeleteEmployeeHandler implements Handler
 
                 if (result)
                 {
-                    ctx.status(204);
-                    ctx.result("Deleted Employee");
+                  //  ctx.status(204); // 204 - no content stops the ctx.result from being printed. I'd rather just send "Employee deleted" than leave blank.
+                    ctx.result("Employee deleted");
                 }
                 else
                 {

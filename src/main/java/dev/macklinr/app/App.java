@@ -16,9 +16,12 @@ import io.javalin.Javalin;
 
 public class App
 {
-    public static final EmployeeService employeeService = new EmployeeServiceImplementation(new EmployeeDaoDB());
+    private static final String employeeTable = "employee";
+    private static final String expenseTable = "expense";
 
-    public static final ExpenseService expenseService = new ExpenseServiceImplementation(new ExpenseDaoDB());
+    public static final EmployeeService employeeService = new EmployeeServiceImplementation(new EmployeeDaoDB(employeeTable));
+
+    public static final ExpenseService expenseService = new ExpenseServiceImplementation(new ExpenseDaoDB(expenseTable));
 
     public static void main(String[] args)
     {

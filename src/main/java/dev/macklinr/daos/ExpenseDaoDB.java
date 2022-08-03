@@ -15,14 +15,25 @@ import java.util.List;
 public class ExpenseDaoDB implements ExpenseDAO
 {
 
-    static String tableName = "testexpense";  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using expense table, or a test table
+    String tableName;  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using expense table, or a test table
+
+    public ExpenseDaoDB()
+    {
+        super();
+        this.tableName = "expense";
+    }
+
+    public ExpenseDaoDB(String tableName)
+    {
+        this.tableName = tableName;
+    }
 
     @Override
     public Expense createExpense(Expense expense)
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "insert into " + tableName + " values (default, ?, ?, ?, ?, ?)";
+            String sql = "insert into " + this.tableName + " values (default, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, expense.getIssuingEmployeeID()); // employeeID
             preparedStatement.setString(2, expense.getExpenseType().name()); // expenseType
@@ -53,7 +64,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from " + tableName + " where id = ?";
+            String sql = "select * from " + this.tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,id);
@@ -84,7 +95,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from " + tableName;
+            String sql = "select * from " + this.tableName;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -119,7 +130,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "update " + tableName + " set employeeid = ?, expensetype = ?, amount = ?, description = ?, expensestatus = ? where id = ?";
+            String sql = "update " + this.tableName + " set employeeid = ?, expensetype = ?, amount = ?, description = ?, expensestatus = ? where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -145,7 +156,7 @@ public class ExpenseDaoDB implements ExpenseDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "delete from " + tableName + " where id = ?";
+            String sql = "delete from " + this.tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 

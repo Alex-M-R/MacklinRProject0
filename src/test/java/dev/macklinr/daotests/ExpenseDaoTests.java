@@ -21,7 +21,9 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExpenseDaoTests
 {
-    static ExpenseDAO expenseDao = new ExpenseDaoDB();
+    private static String employeeTable = "testemployee";
+    private static String expenseTable = "testexpense";
+    static ExpenseDAO expenseDao = new ExpenseDaoDB(expenseTable);
 
     @BeforeAll
     static void setup()
@@ -29,7 +31,7 @@ public class ExpenseDaoTests
         // Create test table for Employees
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "create table testemployee\n" +
+            String sql = "create table " + employeeTable + "\n" +
                     "(\n" +
                     "\tid serial primary key, \t\t\t\n" +
                     "\tname varchar(40) not null \t\n" +
@@ -46,7 +48,7 @@ public class ExpenseDaoTests
         // Create test table for Expenses
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "create table testexpense\n" +
+            String sql = "create table " + expenseTable + "\n" +
                     "(\n" +
                     "\tid serial primary key,\n" +
                     "\temployeeID int references testemployee(id),\n" +
@@ -70,7 +72,7 @@ public class ExpenseDaoTests
     void create_expense_test()
     {
         // create an employee for this and future tests
-        EmployeeDAO employeeDAO = new EmployeeDaoDB();
+        EmployeeDAO employeeDAO = new EmployeeDaoDB(employeeTable);
         Employee testEmployee = new Employee();
         testEmployee.setId(0);
         testEmployee.setName("Alexander Macklin-Rivera");

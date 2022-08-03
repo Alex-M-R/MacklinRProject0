@@ -10,8 +10,19 @@ import java.util.List;
 
 public class EmployeeDaoDB implements EmployeeDAO
 {
+    String tableName;  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using employee table, or a test table
 
-    static String tableName = "testemployee";  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using employee table, or a test table
+    public EmployeeDaoDB()
+    {
+        super();
+        tableName = "employee"; // default to this table name unless specified
+    }
+
+    public EmployeeDaoDB(String tableName)
+    {
+        this.tableName = tableName;
+    }
+
     @Override
     public Employee createEmployee(Employee employee)
     {
@@ -20,7 +31,7 @@ public class EmployeeDaoDB implements EmployeeDAO
         try(Connection conn = ConnectionUtil.createConnection())
         {
             // insert into book values (default, 'The Stranger', 'Albert Camus', 0);
-            String sql = "insert into " + tableName + " values (default, ?)";
+            String sql = "insert into " + this.tableName + " values (default, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, employee.getName());
 
@@ -46,7 +57,7 @@ public class EmployeeDaoDB implements EmployeeDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from " + tableName + " where id = ?";
+            String sql = "select * from " + this.tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,id);
@@ -73,7 +84,7 @@ public class EmployeeDaoDB implements EmployeeDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "select * from " + tableName;
+            String sql = "select * from " + this.tableName;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -102,7 +113,7 @@ public class EmployeeDaoDB implements EmployeeDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "update " + tableName + " set name = ? where id = ?";
+            String sql = "update " + this.tableName + " set name = ? where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
@@ -124,7 +135,7 @@ public class EmployeeDaoDB implements EmployeeDAO
     {
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "delete from " + tableName + " where id = ?";
+            String sql = "delete from " + this.tableName + " where id = ?";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 

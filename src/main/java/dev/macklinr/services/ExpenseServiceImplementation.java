@@ -101,7 +101,7 @@ public class ExpenseServiceImplementation implements ExpenseService
     {
         Expense existing = this.expenseDAO.getExpenseById(expenseID);
 
-        // check that existing expense isn't accepted or pending before overwriting
+        // check that existing expense isn't accepted or denied before overwriting
         if (existing.getStatus() == ExpenseStatus.PENDING)
         {
             existing.setStatus(newExpenseStatus);

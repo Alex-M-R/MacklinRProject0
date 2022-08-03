@@ -23,6 +23,18 @@ public class UpdateExpenseStatusHandler implements Handler
             // valid ID #
             Expense expense = App.expenseService.retrieveExpenseById(id);
 
+//
+//            try
+//            {
+//                ExpenseStatus status = ExpenseStatus.valueOf(param);
+//                expenses = App.expenseService.getAllExpensesByStatus(status);
+//            }
+//            catch (IllegalArgumentException e)
+//            {
+//                ctx.result("Invalid param: " + param + ". Valid parameters: PENDING, APPROVED, DENIED");
+//                return;
+//            }
+
             // can't update an expense that doesn't exist
             if (expense == null)
             {
@@ -34,16 +46,15 @@ public class UpdateExpenseStatusHandler implements Handler
             // id is valid and expense found. update status
 
             String newStatus = ctx.pathParam("newStatus");
-
             try
             {
                 if (newStatus.equals("approve"))
                 {
-                    App.expenseService.updateExpenseStatus(id,ExpenseStatus.APPROVED);
+                    expense = App.expenseService.updateExpenseStatus(id,ExpenseStatus.APPROVED);
                 }
                 else if (newStatus.equals("deny"))
                 {
-                    App.expenseService.updateExpenseStatus(id,ExpenseStatus.DENIED);
+                   expense = App.expenseService.updateExpenseStatus(id,ExpenseStatus.DENIED);
                 }
                 else
                 {

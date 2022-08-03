@@ -21,7 +21,7 @@ public class DeleteExpenseHandler implements Handler
 
                 if (result)
                 {
-                    ctx.status(204);
+                  //  ctx.status(204); // 204 - no content stops the ctx.result from being printed. I'd rather just send "Expense deleted" than leave blank.
                     ctx.result("Expense deleted");
                 }
                 else
@@ -29,6 +29,7 @@ public class DeleteExpenseHandler implements Handler
                     ctx.status(404);
                     ctx.result("Expense not found");
                 }
+                return;
             }
             catch (RuntimeException e)
             {

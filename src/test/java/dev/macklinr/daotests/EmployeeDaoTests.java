@@ -14,10 +14,11 @@ import java.util.Collection;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-// Originally created to test DaoLocal
 public class EmployeeDaoTests
 {
-    EmployeeDAO employeeDAO = new EmployeeDaoDB();
+    private static String employeeTable = "testemployee";
+    EmployeeDAO employeeDAO = new EmployeeDaoDB(employeeTable);
+
 
     @BeforeAll
     static void setup()
@@ -25,7 +26,7 @@ public class EmployeeDaoTests
         // Create test table for Employees
         try(Connection conn = ConnectionUtil.createConnection())
         {
-            String sql = "create table testemployee\n" +
+            String sql = "create table " + employeeTable + "\n" +
                     "(\n" +
                     "\tid serial primary key, \t\t\t\n" +
                     "\tname varchar(40) not null \t\n" +
