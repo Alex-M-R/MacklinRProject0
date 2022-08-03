@@ -27,21 +27,15 @@ public class GetAllExpensesHandler implements Handler
             param = param.toUpperCase();
             // optional parameter being used.
 
-
-            switch (param)
+            try
             {
-                case "PENDING":
-                    expenses = App.expenseService.getAllExpensesByStatus(ExpenseStatus.PENDING);
-                    break;
-                case "APPROVED":
-                    expenses = App.expenseService.getAllExpensesByStatus(ExpenseStatus.APPROVED);
-                    break;
-                case "DENIED":
-                    expenses = App.expenseService.getAllExpensesByStatus(ExpenseStatus.DENIED);
-                    break;
-                default:
-                    ctx.result("Invalid param: " + param +". Valid parameters: PENDING, APPROVED, DENIED.");
-                    return;
+                ExpenseStatus status = ExpenseStatus.valueOf(param);
+                expenses = App.expenseService.getAllExpensesByStatus(status);
+            }
+            catch (IllegalArgumentException e)
+            {
+                ctx.result("Invalid param: " + param + ". Valid parameters: PENDING, APPROVED, DENIED");
+                return;
             }
         }
         else
@@ -50,16 +44,6 @@ public class GetAllExpensesHandler implements Handler
         }
 
         String result = gson.toJson(expenses);
-
         ctx.result(result);
     }
 }
-/*
-// Get all Expense Handler Pseudo code
-
-Gson gson = new Gson();
-
-String optionalParameter = ctx.queryParam(
-
-
- */

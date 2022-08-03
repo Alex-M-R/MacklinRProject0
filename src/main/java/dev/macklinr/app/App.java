@@ -1,6 +1,8 @@
 package dev.macklinr.app;
 
+import dev.macklinr.daos.EmployeeDaoDB;
 import dev.macklinr.daos.EmployeeDaoLocal;
+import dev.macklinr.daos.ExpenseDaoDB;
 import dev.macklinr.daos.ExpenseDaoLocal;
 import dev.macklinr.handlers.employee.*;
 import dev.macklinr.handlers.expense.*;
@@ -14,9 +16,9 @@ import io.javalin.Javalin;
 
 public class App
 {
-    public static final EmployeeService employeeService = new EmployeeServiceImplementation(new EmployeeDaoLocal());
+    public static final EmployeeService employeeService = new EmployeeServiceImplementation(new EmployeeDaoDB());
 
-    public static final ExpenseService expenseService = new ExpenseServiceImplementation(new ExpenseDaoLocal());
+    public static final ExpenseService expenseService = new ExpenseServiceImplementation(new ExpenseDaoDB());
 
     public static void main(String[] args)
     {
@@ -36,7 +38,6 @@ public class App
         DeleteExpenseHandler deleteExpenseHandler = new DeleteExpenseHandler();
         GetAllExpensesHandler getAllExpensesHandler = new GetAllExpensesHandler();
         GetExpenseByIdHandler getExpenseByIdHandler = new GetExpenseByIdHandler();
-        GetAllExpensesWithStatusHandler getAllExpensesWithStatusHandler = new GetAllExpensesWithStatusHandler();
         UpdateExpenseHandler updateExpenseHandler = new UpdateExpenseHandler();
         UpdateExpenseStatusHandler updateExpenseStatusHandler = new UpdateExpenseStatusHandler();
 
@@ -51,7 +52,7 @@ public class App
         // POST /employees              -> Creates employee and returns a 201 status code
         app.post("/employees",createEmployeeHandler);
 
-        // GET /employees               -> returns all employees(?)
+        // GET /employees               -> returns all employees
         app.get("/employees", getAllEmployeesHandler);
 
         // GET /employees/{id}          -> returns specific employee or a 404 if employee not found
@@ -69,23 +70,23 @@ public class App
         // POST /expenses                       -> creates expense and returns a 201 status code
         app.post("/expenses",createExpenseHandler);
 
-        // GET /expenses                        -> returns all expenses  has optional paramater ?status='status'. Check for it in GetAllExpense Handler
+        // GET /expenses                        -> returns all expenses or all expenses with status (optional parameter ?status='status').
         app.get("/expenses", getAllExpensesHandler);
 
         // GET /expenses/{id}                   -> get specific expense or return a 404 if not found
         app.get("/expenses/{id}", getExpenseByIdHandler);
 
-        // PUT /expenses/{id}                   -> update (overwrite?) expense record or return 404 if not found
+        // PUT /expenses/{id}                   -> update (overwrite) expense record or return 404 if not found
         app.put("/expenses/{id}", updateExpenseHandler);
 
-        // PATCH /expenses/{id}/{approve/deny}  -> update status of specific record or return a 404 if not found
+        // PATCH /expenses/{id}/{approve/deny}  -> update status of a record or return a 404 if record not found
         app.patch("/expenses/{id}/{newStatus}", updateExpenseStatusHandler);
 
         // DELETE /expenses/{id}                -> delete expense record OR return 404 if not found OR return 422 if no longer Pending (Approved/Denied)
         app.delete("/expenses/{id}", deleteExpenseHandler);
 
 
-    // Nested Routes - not sure if "nested" just refers to the structure of the route declaration below, or if it's a way to combine implemented routes
+    // Nested Routes - confirmed "nested" just refers to the structure of the route declaration below
         // GET /employees/{id}/expenses         -> returns all expenses for specific employee
         app.get("/employees/{id}/expenses", getAllExpensesForEmployeeHandler);
 

@@ -13,9 +13,6 @@ public class CreateExpenseForEmployeeHandler implements Handler
     @Override
     public void handle(@NotNull Context ctx) throws Exception
     {
-        // check employee exists with get employee
-        // then register expense
-
         int id = InputValidation.ValidatePositiveInt(ctx.pathParam("id"));
 
         if (id > 0)
@@ -53,6 +50,5 @@ public class CreateExpenseForEmployeeHandler implements Handler
             ctx.status(400);
             ctx.result("Invalid id value of : " + ctx.pathParam("id"));
         }
-
     }
 }

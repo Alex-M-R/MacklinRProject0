@@ -13,13 +13,7 @@ public interface ExpenseDAO
 
     Collection<Expense> getAllExpenses();
 
-    // Get all expenses with specific status
-    Collection<Expense> getAllExpensesWithStatus(ExpenseStatus expenseStatus);
-
     Expense updateExpense(Expense expense);
 
     boolean deleteExpenseById(int id);
-
-    Collection<Expense> getAllExpensesByEmployeeId(int employeeId);
-
 }

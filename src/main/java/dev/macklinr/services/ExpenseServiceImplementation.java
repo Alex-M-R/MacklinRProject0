@@ -7,6 +7,8 @@ import dev.macklinr.entities.Expense;
 import dev.macklinr.entities.ExpenseStatus;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 // Expense/Business Rules - enforced in the business service layer (services) not in the dao(object creation/get/update/delete)
 // All expenses have a single employee as the issuer
@@ -112,7 +114,11 @@ public class ExpenseServiceImplementation implements ExpenseService
     @Override
     public Collection<Expense> getAllExpenseByEmployeeId(int employeeID)
     {
-        return this.expenseDAO.getAllExpensesByEmployeeId(employeeID);
+        Collection<Expense> allExpenses = this.expenseDAO.getAllExpenses();
+
+        Collection<Expense> employeeExpenses = allExpenses.stream().filter(expense -> expense.getIssuingEmployeeID() == employeeID).collect(Collectors.toList());
+
+        return employeeExpenses;
     }
 
     @Override
@@ -124,6 +130,10 @@ public class ExpenseServiceImplementation implements ExpenseService
     @Override
     public Collection<Expense> getAllExpensesByStatus(ExpenseStatus status)
     {
-        return this.expenseDAO.getAllExpensesWithStatus(status);
+        Collection<Expense> allExpenses = this.expenseDAO.getAllExpenses();
+
+        Collection<Expense> expensesWithStatus = allExpenses.stream().filter(expense -> expense.getStatus() == status).collect(Collectors.toList());
+
+        return expensesWithStatus;
     }
 }

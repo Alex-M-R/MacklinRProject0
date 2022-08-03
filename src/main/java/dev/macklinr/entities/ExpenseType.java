@@ -2,16 +2,8 @@ package dev.macklinr.entities;
 
 public enum ExpenseType
 {
+    LODGING,
     TRAVEL,
-    MEALS,
-    ENTERTAINMENT,
-    VEHICLE,
-    SUPPLIES,
-    EDUCATION,
+    FOOD,
     MISC
 }
-
-// LODGING
-// TRAVEL
-// FOOD
-// MISC
