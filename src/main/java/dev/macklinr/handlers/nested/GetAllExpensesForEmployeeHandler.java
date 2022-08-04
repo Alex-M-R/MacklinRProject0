@@ -2,6 +2,7 @@ package dev.macklinr.handlers.nested;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Employee;
 import dev.macklinr.entities.Expense;
@@ -24,8 +25,7 @@ public class GetAllExpensesForEmployeeHandler implements Handler
 
             if (employee == null)
             {
-                ctx.status(404);
-                ctx.result("No employee with ID: " + id);
+                CannedResponse.InvalidEmployeeID(ctx, id);
                 return;
             }
 
@@ -33,14 +33,11 @@ public class GetAllExpensesForEmployeeHandler implements Handler
             Collection<Expense> employeeExpenses = App.expenseService.getAllExpenseByEmployeeId(id);
 
             Gson gson = new Gson();
-            String result = gson.toJson(employeeExpenses);
+            String result = gson.toJson(employee) + "\n\n" + gson.toJson(employeeExpenses);
 
             ctx.result(result);
         }
         else
-        {
-            ctx.status(400);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
-        }
+            CannedResponse.InvalidID(ctx);
     }
 }

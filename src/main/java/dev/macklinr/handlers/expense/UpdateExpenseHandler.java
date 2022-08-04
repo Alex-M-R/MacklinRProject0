@@ -2,6 +2,7 @@ package dev.macklinr.handlers.expense;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Expense;
 import io.javalin.http.Context;
@@ -29,24 +30,18 @@ public class UpdateExpenseHandler implements Handler
                 {
                     App.expenseService.modifyExpense(updatedExpense);
                 }
-
                 catch (RuntimeException e)
                 {
                     ctx.result(e.getMessage());
                 }
-
             }
             else
             {
-                ctx.status(404);
-                ctx.result("No expense with ID: " + id);
+                CannedResponse.InvalidExpenseID(ctx, id);
                 return;
             }
         }
         else
-        {
-            ctx.status(400);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
-        }
+            CannedResponse.InvalidID(ctx);
     }
 }

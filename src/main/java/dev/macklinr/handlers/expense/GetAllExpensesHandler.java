@@ -34,6 +34,7 @@ public class GetAllExpensesHandler implements Handler
             }
             catch (IllegalArgumentException e)
             {
+                ctx.status(400);
                 ctx.result("Invalid param: " + param + ". Valid parameters: PENDING, APPROVED, DENIED");
                 return;
             }

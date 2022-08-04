@@ -1,6 +1,7 @@
 package dev.macklinr.handlers.employee;
 
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -22,25 +23,24 @@ public class DeleteEmployeeHandler implements Handler
                 if (result)
                 {
                   //  ctx.status(204); // 204 - no content stops the ctx.result from being printed. I'd rather just send "Employee deleted" than leave blank.
+                    ctx.status(200);
                     ctx.result("Employee deleted");
                 }
                 else
                 {
-                    ctx.status(404);
-                    ctx.result("Employee not found");
+                    CannedResponse.InvalidEmployeeID(ctx, id);
                 }
             }
             catch (RuntimeException e)
             {
-                    ctx.status(401);
+                    ctx.status(400);
                     ctx.result(e.getMessage());
             }
         }
         else
         {
             // invalid int parameter
-            ctx.status(422);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
+            CannedResponse.InvalidID(ctx);
         }
     }
 }

@@ -1,6 +1,7 @@
 package dev.macklinr.handlers.expense;
 
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -25,23 +26,17 @@ public class DeleteExpenseHandler implements Handler
                     ctx.result("Expense deleted");
                 }
                 else
-                {
-                    ctx.status(404);
-                    ctx.result("Expense not found");
-                }
+                    CannedResponse.InvalidExpenseID(ctx, id);
+
                 return;
             }
             catch (RuntimeException e)
             {
-                ctx.status(422);
+                ctx.status(400);
                 ctx.result(e.getMessage());
             }
         }
         else
-        {
-            // invalid int parameter
-            ctx.status(400);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
-        }
+            CannedResponse.InvalidID(ctx);
     }
 }

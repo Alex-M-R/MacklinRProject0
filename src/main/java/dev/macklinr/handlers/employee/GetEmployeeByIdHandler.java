@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import dev.macklinr.app.App;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Employee;
+import dev.macklinr.utils.CannedResponse;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -27,8 +28,7 @@ public class GetEmployeeByIdHandler implements Handler
 
             if (employee == null)
             {
-                ctx.status(404);
-                ctx.result("No employee with ID: " + id);
+                CannedResponse.InvalidEmployeeID(ctx, id);
                 return;
             }
 
@@ -39,9 +39,6 @@ public class GetEmployeeByIdHandler implements Handler
             ctx.result(json);
         }
         else
-        {
-            ctx.status(422);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
-        }
+            CannedResponse.InvalidID(ctx);
     }
 }

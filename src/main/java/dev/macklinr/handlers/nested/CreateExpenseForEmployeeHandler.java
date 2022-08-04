@@ -2,6 +2,7 @@ package dev.macklinr.handlers.nested;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Expense;
 import io.javalin.http.Context;
@@ -20,8 +21,7 @@ public class CreateExpenseForEmployeeHandler implements Handler
             // valid ID #
             if (App.employeeService.retrieveEmployeeById(id) == null)
             {
-                ctx.status(404);
-                ctx.result("No employee with ID: " + id);
+                CannedResponse.InvalidEmployeeID(ctx, id);
                 return;
             }
 
@@ -47,8 +47,7 @@ public class CreateExpenseForEmployeeHandler implements Handler
         }
         else
         {
-            ctx.status(400);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
+            CannedResponse.InvalidID(ctx);
         }
     }
 }

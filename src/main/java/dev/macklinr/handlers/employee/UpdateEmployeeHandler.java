@@ -2,6 +2,7 @@ package dev.macklinr.handlers.employee;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Employee;
 import io.javalin.http.Context;
@@ -31,14 +32,12 @@ public class UpdateEmployeeHandler implements Handler
             }
             else    // no employee at that ID. send 404 employee not found
             {
-                ctx.status(404);
-                ctx.result("Employee not found");
+                CannedResponse.InvalidEmployeeID(ctx, id);
             }
         }
         else
         {
-            ctx.status(422);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
+            CannedResponse.InvalidID(ctx);
         }
     }
 }

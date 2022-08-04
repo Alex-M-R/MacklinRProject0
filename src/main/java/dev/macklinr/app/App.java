@@ -8,6 +8,7 @@ import dev.macklinr.handlers.employee.*;
 import dev.macklinr.handlers.expense.*;
 import dev.macklinr.handlers.nested.CreateExpenseForEmployeeHandler;
 import dev.macklinr.handlers.nested.GetAllExpensesForEmployeeHandler;
+import dev.macklinr.handlers.nested.MassCreateExpensesForEmployeeHandler;
 import dev.macklinr.services.EmployeeService;
 import dev.macklinr.services.EmployeeServiceImplementation;
 import dev.macklinr.services.ExpenseService;
@@ -48,6 +49,10 @@ public class App
         CreateExpenseForEmployeeHandler createExpenseForEmployeeHandler = new CreateExpenseForEmployeeHandler();
         GetAllExpensesForEmployeeHandler getAllExpensesForEmployeeHandler = new GetAllExpensesForEmployeeHandler();
 
+        // Outside of project scope/requirements
+        MassCreateEmployeesHandler massCreateEmployeesHandler = new MassCreateEmployeesHandler();
+        MassCreateExpensesForEmployeeHandler massCreateExpensesForEmployeeHandler = new MassCreateExpensesForEmployeeHandler();
+
 // Rest api routes
 
     // Required Employee Routes
@@ -66,6 +71,9 @@ public class App
 
         // DELETE /employees/{id}       -> deletes employee or returns a 404 if employee not found
         app.delete("/employees/{id}", deleteEmployeeHandler);
+
+        // outside of project scope/requirements
+        app.post("/employees-bulk", massCreateEmployeesHandler);
 
 
     // Required Expenses Routes
@@ -95,6 +103,9 @@ public class App
 
         // POST /employees/{id}/expenses        -> add an expense to specific employee
         app.post("/employees/{id}/expenses", createExpenseForEmployeeHandler);
+
+        // outside of project scope/requirements
+        app.post("/employees/{id}/expenses-bulk", massCreateExpensesForEmployeeHandler);
 
         app.start();
     }

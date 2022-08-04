@@ -2,6 +2,7 @@ package dev.macklinr.handlers.expense;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Expense;
 import dev.macklinr.entities.ExpenseStatus;
@@ -9,13 +10,14 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 public class UpdateExpenseStatusHandler implements Handler
 {
     @Override
     public void handle(@NotNull Context ctx) throws Exception
     {
-        // patch - given approve or deny as url input, and must change specified expense's status accordingly. Can't use the enum as they don't match
-
+        // patch - given approve or deny as url input: must change specified expense's status accordingly. Can't use the enum as they don't match incoming text
         int id = InputValidation.ValidatePositiveInt(ctx.pathParam("id"));
 
         if (id > 0)
@@ -23,29 +25,16 @@ public class UpdateExpenseStatusHandler implements Handler
             // valid ID #
             Expense expense = App.expenseService.retrieveExpenseById(id);
 
-//
-//            try
-//            {
-//                ExpenseStatus status = ExpenseStatus.valueOf(param);
-//                expenses = App.expenseService.getAllExpensesByStatus(status);
-//            }
-//            catch (IllegalArgumentException e)
-//            {
-//                ctx.result("Invalid param: " + param + ". Valid parameters: PENDING, APPROVED, DENIED");
-//                return;
-//            }
-
             // can't update an expense that doesn't exist
             if (expense == null)
             {
-                ctx.status(404);
-                ctx.result("No expense with ID: " + id);
+                CannedResponse.InvalidExpenseID(ctx, id);
                 return;
             }
 
             // id is valid and expense found. update status
-
             String newStatus = ctx.pathParam("newStatus");
+            newStatus = newStatus.toLowerCase();
             try
             {
                 if (newStatus.equals("approve"))
@@ -60,7 +49,7 @@ public class UpdateExpenseStatusHandler implements Handler
                 {
                     // new status is invalid
                     ctx.status(400);
-                    ctx.result(newStatus + " is not a valid status. Valid status inputs: approve , deny");
+                    ctx.result(newStatus + " is not a valid status. Valid status inputs: approve, deny");
                     return;
                 }
 
@@ -77,9 +66,6 @@ public class UpdateExpenseStatusHandler implements Handler
             }
         }
         else
-        {
-            ctx.status(400);
-            ctx.result("Invalid id value of : " + ctx.pathParam("id"));
-        }
+            CannedResponse.InvalidID(ctx);
     }
 }

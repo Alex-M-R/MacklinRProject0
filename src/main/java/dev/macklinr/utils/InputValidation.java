@@ -1,6 +1,7 @@
 package dev.macklinr.utils;
 
 import dev.macklinr.entities.ExpenseStatus;
+import io.javalin.http.Context;
 
 // collection of methods to try/catch attempts at parsing string input as... something else
 public class InputValidation
@@ -42,6 +43,11 @@ public class InputValidation
 
         // expense not found!
         throw new RuntimeException("Invalid Expense Status. Received Input: " + status + ". Valid Inputs: PENDING , APPROVED , DENIED");
+    }
+
+    public static String InvalidInt(String param)
+    {
+        return "Invalid id value of: " + param;
     }
 
 }
