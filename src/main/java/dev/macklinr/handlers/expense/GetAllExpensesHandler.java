@@ -2,7 +2,6 @@ package dev.macklinr.handlers.expense;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
-import dev.macklinr.entities.Employee;
 import dev.macklinr.entities.Expense;
 import dev.macklinr.entities.ExpenseStatus;
 import io.javalin.http.Context;
@@ -20,7 +19,7 @@ public class GetAllExpensesHandler implements Handler
 
         String param = ctx.queryParam("status");
 
-        Collection<Expense> expenses = null;
+        Collection<Expense> expenses;
 
         if (param != null)
         {

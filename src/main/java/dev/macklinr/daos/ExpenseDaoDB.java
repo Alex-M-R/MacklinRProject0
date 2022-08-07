@@ -1,6 +1,5 @@
 package dev.macklinr.daos;
 
-import dev.macklinr.entities.Employee;
 import dev.macklinr.entities.Expense;
 import dev.macklinr.entities.ExpenseStatus;
 import dev.macklinr.entities.ExpenseType;
@@ -15,7 +14,7 @@ import java.util.List;
 public class ExpenseDaoDB implements ExpenseDAO
 {
 
-    String tableName;  // setup SQL using this instead of literal for table name. This way I can easily change whether or not I'm using expense table, or a test table
+    String tableName;  // setup SQL using this instead of literal for table name. This way I can easily change the table I'm using
 
     public ExpenseDaoDB()
     {
@@ -101,7 +100,7 @@ public class ExpenseDaoDB implements ExpenseDAO
 
             ResultSet rs = preparedStatement.executeQuery();
 
-            List<Expense> expenseList = new ArrayList();
+            List<Expense> expenseList = new ArrayList<>();
             while(rs.next())
             {
                 Expense expense = new Expense();

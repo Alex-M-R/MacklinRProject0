@@ -1,24 +1,17 @@
 package dev.macklinr.servicetests;
 
 import dev.macklinr.daos.EmployeeDAO;
-import dev.macklinr.daos.EmployeeDaoDB;
+
 import dev.macklinr.entities.Employee;
 import dev.macklinr.services.EmployeeService;
 import dev.macklinr.services.EmployeeServiceImplementation;
-import dev.macklinr.utils.ConnectionUtil;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EmployeeServiceTests
 {
-    private EmployeeDAO  eDao= Mockito.mock(EmployeeDAO.class);
-    private static String employeeTable = "testemployee";
+    private final EmployeeDAO  eDao= Mockito.mock(EmployeeDAO.class);
     EmployeeService employeeService = new EmployeeServiceImplementation(eDao);
 
     @Test

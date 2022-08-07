@@ -1,6 +1,7 @@
 package dev.macklinr.handlers.expense;
 
 import dev.macklinr.app.App;
+import dev.macklinr.entities.Expense;
 import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import io.javalin.http.Context;
@@ -18,17 +19,18 @@ public class DeleteExpenseHandler implements Handler
         {
             try
             {
-                boolean result = App.expenseService.deleteExpense(id);
 
-                if (result)
+                Expense temp = App.expenseService.retrieveExpenseById(id);
+
+                if (temp == null)
                 {
-                  //  ctx.status(204); // 204 - no content stops the ctx.result from being printed. I'd rather just send "Expense deleted" than leave blank.
-                    ctx.result("Expense deleted");
+                    CannedResponse.InvalidExpenseID(ctx, id);
                 }
                 else
-                    CannedResponse.InvalidExpenseID(ctx, id);
-
-                return;
+                {
+                    App.expenseService.deleteExpense(id);
+                    ctx.result("Expense deleted");
+                }
             }
             catch (RuntimeException e)
             {

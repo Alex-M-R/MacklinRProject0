@@ -1,6 +1,7 @@
 package dev.macklinr.handlers.employee;
 
 import dev.macklinr.app.App;
+import dev.macklinr.entities.Employee;
 import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import io.javalin.http.Context;
@@ -18,17 +19,18 @@ public class DeleteEmployeeHandler implements Handler
         {
             try
             {
-                boolean result = App.employeeService.deleteEmployee(id);    // returns the 'deleted' employee. Returns null if there was nothing to delete
+                Employee temp = App.employeeService.retrieveEmployeeById(id);
 
-                if (result)
+                if (temp == null)
                 {
-                  //  ctx.status(204); // 204 - no content stops the ctx.result from being printed. I'd rather just send "Employee deleted" than leave blank.
-                    ctx.status(200);
-                    ctx.result("Employee deleted");
+                    // no employee send error
+                    CannedResponse.InvalidEmployeeID(ctx, id);
                 }
                 else
                 {
-                    CannedResponse.InvalidEmployeeID(ctx, id);
+                    App.employeeService.deleteEmployee(id);    // always returning true after switching to DB. checking if employee at index exists before deleting
+                    ctx.status(200);
+                    ctx.result("Employee deleted");
                 }
             }
             catch (RuntimeException e)

@@ -9,14 +9,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EmployeeDaoTests
 {
-    private static String employeeTable = "testemployee";
+    private static final String employeeTable = "testemployee";
     EmployeeDAO employeeDAO = new EmployeeDaoDB(employeeTable);
 
 

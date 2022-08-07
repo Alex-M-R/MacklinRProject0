@@ -1,9 +1,7 @@
 package dev.macklinr.app;
 
 import dev.macklinr.daos.EmployeeDaoDB;
-import dev.macklinr.daos.EmployeeDaoLocal;
 import dev.macklinr.daos.ExpenseDaoDB;
-import dev.macklinr.daos.ExpenseDaoLocal;
 import dev.macklinr.handlers.employee.*;
 import dev.macklinr.handlers.expense.*;
 import dev.macklinr.handlers.nested.CreateExpenseForEmployeeHandler;
@@ -72,7 +70,7 @@ public class App
         // DELETE /employees/{id}       -> deletes employee or returns a 404 if employee not found
         app.delete("/employees/{id}", deleteEmployeeHandler);
 
-        // outside of project scope/requirements
+    // outside of project scope/requirements
         app.post("/employees-bulk", massCreateEmployeesHandler);
 
 
@@ -104,7 +102,7 @@ public class App
         // POST /employees/{id}/expenses        -> add an expense to specific employee
         app.post("/employees/{id}/expenses", createExpenseForEmployeeHandler);
 
-        // outside of project scope/requirements
+    // outside of project scope/requirements
         app.post("/employees/{id}/expenses-bulk", massCreateExpensesForEmployeeHandler);
 
         app.start();

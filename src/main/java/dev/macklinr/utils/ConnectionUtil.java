@@ -10,8 +10,7 @@ public class ConnectionUtil
     {
         try
         {
-            Connection conn = DriverManager.getConnection(System.getenv("AZURE_PROJECT_0_DB"));
-            return conn;
+            return DriverManager.getConnection(System.getenv("AZURE_PROJECT_0_DB"));
         }
         catch (SQLException e)
         {

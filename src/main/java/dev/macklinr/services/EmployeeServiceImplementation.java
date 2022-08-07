@@ -9,7 +9,7 @@ import java.util.Collection;
 // implement business rules and check data before inserting i guess
 public class EmployeeServiceImplementation implements EmployeeService
 {
-    private EmployeeDAO employeeDAO;
+    private final EmployeeDAO employeeDAO;
 
     public EmployeeServiceImplementation(EmployeeDAO employeeDao)
     {
@@ -19,16 +19,7 @@ public class EmployeeServiceImplementation implements EmployeeService
     @Override
     public Employee registerEmployee(Employee employee)
     {
-        // could check that employee name is not null, but then I'd have to add if (employee == null) to create handler... to check if we successfully created...
-        // FOR NOW - Assume we'll willingly create employees with no name - since they are tracked by their id anyway. So it's not catastrophic failure,
-        // but bad data.
-
-     //   if (employee.getName().length() == 0)
-     //       throw new RuntimeException("Employee name cannot be empty");     // I guess technically it can but... no
-
-        Employee savedEmployee = this.employeeDAO.createEmployee(employee);
-
-        return savedEmployee;
+        return this.employeeDAO.createEmployee(employee);
     }
 
     @Override
@@ -59,11 +50,6 @@ public class EmployeeServiceImplementation implements EmployeeService
     @Override
     public Employee modifyEmployee(Employee employee)
     {
-        // add any rules or reasons why an edit would be bad and needs to be accounted for. like empty names etc.
-       // if (employee.getName().length() == 0)
-       //     throw new RuntimeException("Employee name cannot be empty");
-
-
         return this.employeeDAO.updateEmployee(employee);
     }
 }
