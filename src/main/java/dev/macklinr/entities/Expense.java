@@ -14,7 +14,6 @@ public class Expense
     private ExpenseType expenseType;
     private double expenseAmount;
     private ExpenseStatus status;
-
     private String description;
 
     public Expense()
