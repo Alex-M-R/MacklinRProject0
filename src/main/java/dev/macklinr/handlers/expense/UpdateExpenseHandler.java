@@ -2,6 +2,7 @@ package dev.macklinr.handlers.expense;
 
 import com.google.gson.Gson;
 import dev.macklinr.app.App;
+import dev.macklinr.entities.ExpenseStatus;
 import dev.macklinr.utils.CannedResponse;
 import dev.macklinr.utils.InputValidation;
 import dev.macklinr.entities.Expense;
@@ -28,7 +29,9 @@ public class UpdateExpenseHandler implements Handler
 
                 try
                 {
-                    App.expenseService.modifyExpense(updatedExpense);
+                    Expense savedExpense = App.expenseService.modifyExpense(updatedExpense);
+
+                    ctx.result(gson.toJson(savedExpense));
                 }
                 catch (RuntimeException e)
                 {

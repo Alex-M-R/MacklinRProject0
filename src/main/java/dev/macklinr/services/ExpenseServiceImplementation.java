@@ -86,6 +86,10 @@ public class ExpenseServiceImplementation implements ExpenseService
             Employee existingEmployee = App.employeeService.retrieveEmployeeById(expense.getIssuingEmployeeID());
             if (existingEmployee != null)
             {
+                if (expense.getExpenseAmount() <= 0)
+                {
+                    throw new RuntimeException("Invalid expense value: " + expense.getExpenseAmount());
+                }
                 expense.setStatus(ExpenseStatus.PENDING);   // in case user failed to add a PENDING status in the JSON. Otherwise it breaks business rule implementation
                 return this.expenseDAO.updateExpense(expense);
             }

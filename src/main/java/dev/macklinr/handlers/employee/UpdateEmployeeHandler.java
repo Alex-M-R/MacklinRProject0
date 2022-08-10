@@ -28,7 +28,9 @@ public class UpdateEmployeeHandler implements Handler
 
                 employee.setId(id); // force employee ID to pathParam id just in case
 
-                App.employeeService.modifyEmployee(employee);
+                Employee savedEmployee = App.employeeService.modifyEmployee(employee);
+
+                ctx.result(gson.toJson(savedEmployee));
             }
             else    // no employee at that ID. send 404 employee not found
             {
