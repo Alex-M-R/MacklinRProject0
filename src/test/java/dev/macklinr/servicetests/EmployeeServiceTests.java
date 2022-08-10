@@ -41,9 +41,9 @@ public class EmployeeServiceTests
     @Order(5)
     void delete_employee_by_id_test()
     {
-        Mockito.when(eDao.deleteEmployeeById(1)).thenReturn(true);
+        Mockito.when(eDao.deleteEmployeeById(99)).thenReturn(true);
 
-        Assertions.assertTrue(employeeService.deleteEmployee(1));
+        Assertions.assertTrue(employeeService.deleteEmployee(99));
     }
 
     @Test
