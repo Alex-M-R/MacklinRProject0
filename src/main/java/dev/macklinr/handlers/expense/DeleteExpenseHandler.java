@@ -34,7 +34,7 @@ public class DeleteExpenseHandler implements Handler
             }
             catch (RuntimeException e)
             {
-                ctx.status(400);
+                ctx.status(422);
                 ctx.result(e.getMessage());
             }
         }
